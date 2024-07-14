@@ -50,6 +50,7 @@ const runConsumer = async () => {
 };
 runConsumer().catch(console.error);
 app.get("/getAllProducts", product.getProducts);
+app.post("/buyProduct", product.buyProduct);
 
 app.listen({ port: 5001 }, async () => {
   console.log("Server up on http://localhost:5001");
