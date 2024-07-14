@@ -20,10 +20,31 @@ const runConsumer = async () => {
     topic: "user-registrations2",
     fromBeginning: true,
   });
+  await consumer.subscribe({
+    topic: "user-login",
+    fromBeginning: true,
+  });
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      const { userId } = JSON.parse(message.value.toString());
-      await user.create({ userID: userId });
+      if (topic === "user-registrations2") {
+        const { userId } = JSON.parse(message.value.toString());
+        await user.create({ userID: userId });
+      }
+      if (topic === "user-login") {
+        const { userId, isActive } = JSON.parse(message.value.toString());
+        console.log(userId + "-------------" + isActive);
+        try {
+          const res = await user.update(
+            { isActive },
+            { where: { userID: userId } }
+          );
+          console.log(
+            `Updated user with userId ${userId} to isActive: ${isActive}`
+          );
+        } catch (error) {
+          console.error("Error updating user:", error);
+        }
+      }
     },
   });
 };

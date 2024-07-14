@@ -68,6 +68,12 @@ const login = async (req, res) => {
           expiresIn: "10h",
         }
       );
+      const isActive = true;
+      const userId = userFound.id;
+      await producer.send({
+        topic: "user-login",
+        messages: [{ value: JSON.stringify({ userId, isActive }) }],
+      });
       return res.status(200).json(token);
     } else {
       res.status(404).json({ error: "user is not found" });
