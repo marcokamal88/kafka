@@ -29,7 +29,7 @@ const register = async (req, res) => {
         const createdUser = await user.create({ name, email, password });
         const userId = createdUser.id;
         await producer.send({
-          topic: "user-registrations",
+          topic: "user-registrations2",
           messages: [{ value: JSON.stringify({ userId }) }],
         });
         return res.status(200).json("user registered successfully");

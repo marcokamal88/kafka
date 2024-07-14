@@ -17,7 +17,7 @@ const consumer = kafka.consumer({ groupId: "product-group" });
 const runConsumer = async () => {
   await consumer.connect();
   await consumer.subscribe({
-    topic: "user-registrations",
+    topic: "user-registrations2",
     fromBeginning: true,
   });
   await consumer.run({
